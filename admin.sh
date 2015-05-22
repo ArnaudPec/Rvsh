@@ -25,19 +25,22 @@ function loop {
 function users {
   case $1 in
     -a )
-        user_add $2 
+        user_add $2
       ;;
     -d )
-        user_add $2 $3
+        user_del $2
       ;;
     -p )
-        user_add $2 $3
+        user_change_pass $2
       ;;
     +r )
-    user_add $2 $3
+        user_add_right $2 $3
       ;;
     -r )
-    user_add $2 $3
+        user_del_right $2 $3
+      ;;
+    -l )
+      cat admin/list
       ;;
     * )
       user_usage
