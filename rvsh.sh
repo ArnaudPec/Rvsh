@@ -3,6 +3,8 @@
 # @(#) Auteurs : Walid Sadaoui, Arnaud Pecoraro
 # @(#) Date : 2015
 
+# Inclusion des fonctions de connexions
+
 source func.sh
 
   if [[ $1 == "-connect" && $# -eq 3 ]]; then
@@ -27,7 +29,6 @@ source func.sh
       init $passwd
 
       bash admin.sh
-
 
     fi
 

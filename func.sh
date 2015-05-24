@@ -2,14 +2,14 @@
 
 function usage {
   echo "Erreur: mauvaise syntaxe"
-  echo  "Mode connect : rvsh -connect  [nomMachine] [nomUser]"
+  echo "Mode connect : rvsh -connect  [nomMachine] [nomUser]"
   echo "Mode admin : rvsh -admin [nomAdmin]"
 
 }
 
 function  checkAdmin {
   if [[ -e admin/admin ]]; then
-     exists=1
+    exists=1
   else
     exists=0
   fi

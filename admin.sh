@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
+# Inclusion des fonctions de la partie administrateur
 source func_admin.sh
 
+
+# Fonction définnissant la boucle du prompt admin
 P1="rvsh>"
 
 function loop {
@@ -22,6 +25,8 @@ function loop {
 
 }
 
+# Fonction de gestion de la commande users
+
 function users {
   case $1 in
     -a )
@@ -40,7 +45,7 @@ function users {
         user_del_right $2 $3
       ;;
     -l )
-      cat admin/list
+      cat admin/list | cut -f1 -d ' '
       ;;
     * )
       user_usage
@@ -50,4 +55,5 @@ function users {
   esac
 }
 
+# Lancement du prompt
 loop

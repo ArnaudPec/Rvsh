@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
+# Fonction détaillant l'utilisation de la commande users
 function user_usage {
   echo -e "Utilisations possibles: \n-a [nomUser] [passwd]\n-d [nomUser]\n-p [nomUser] [passwd]\n+r [nomUser] [machine] \n-r [nomUser] [machine]"
 }
 
+# Fonction d'ajout d'utilisateur
 function user_add {
   # On test si l'utilisateur existe
     if  ! grep -q $1 admin/passwd ; then
@@ -17,6 +19,7 @@ function user_add {
 
 }
 
+# Fonction de suppression d'utilisateur
 function user_del {
   # On test si l'utilisateur existe
     if   grep -q $1 admin/list ; then
@@ -29,6 +32,7 @@ function user_del {
 
 }
 
+# Fonction de modification de mot de passe
 function user_change_pass {
 
   if  grep -q $1 admin/passwd ; then
@@ -42,13 +46,14 @@ function user_change_pass {
 
 }
 
+# Fonction d'ajout de droit
 function user_add_right {
 
   if grep -q $1 admin/list ; then
 
-    if grep -q $2 machines/list ; then
-      if grep -q "$1 $2" admin/list; then
-        echo  "$1 est deja autorise sur $2"
+    if grep -q "$2$" machines/list ; then
+      if grep  -q "^$1 .*$2" admin/list ; then
+        echo  "$1 est deja autorise sur $2."
       else
         echo "Autorisation de $1 sur $2."
         sed -i "s/\($1\)/\1 $2/" admin/list
@@ -62,16 +67,18 @@ function user_add_right {
   fi
 }
 
+# Fonction de suppression de droit
 function user_del_right {
 
   if grep -q $1 admin/list ; then
 
-    if grep -q $2 machines/list ; then
-      if grep -q $1 $2 admin/list; then
-        echo  "$1 est deja autorise sur $2"
+    if grep -q "$2$" machines/list ; then
+      if grep -q  "^$1 .*$2" admin/list; then
+        echo "Suppression de l'autorisation de $1 sur $2."
+        grep $1 admin/list | sed "s/$2//" >> admin/list # On supprime la machine de la ligne de l'utilisateur et on réecrit cette ligne en fin de fichier
+        sed -i "0,/$1/{/$1/d}" admin/list # On supprime la première ligne de permission de l'utilisateur
       else
-        echo "Autorisation de $1 sur $2."
-        sed -i "s/\(^$1\).\(*\)/\1 $2 \2/" admin/list
+        echo  "$1 n'est pas autorise sur $2."
       fi
     else
       echo "$2 n'existe pas sur le réseau"
