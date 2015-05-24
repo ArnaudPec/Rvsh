@@ -5,7 +5,7 @@
 
 # Inclusion des fonctions de connexions
 
-source func.sh
+source rvsh_func.sh
 
   if [[ $1 == "-connect" && $# -eq 3 ]]; then
     clear

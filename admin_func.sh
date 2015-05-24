@@ -123,3 +123,8 @@ function vm_del {
 
 
 }
+
+# Fonction détaillant l'utilisation de la commande afinger
+function afinger_usage {
+  echo -e "Utilisations possibles: \n- "
+}

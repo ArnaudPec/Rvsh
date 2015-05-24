@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Inclusion des fonctions de la partie administrateur
-source func_admin.sh
+source admin_func.sh
 
 
 # Fonction définnissant la boucle du prompt admin
@@ -44,10 +44,10 @@ function users {
     -r )
         users_del_right $2 $3
       ;;
-    -l )
+    -l ) #liste
       cat admin/list | cut -f1 -d ' '
       ;;
-    -lp )
+    -lp ) #liste avec permissions
       cat admin/list
       ;;
     * )
@@ -56,7 +56,7 @@ function users {
   esac
 }
 
-# Fonction de gestion de la commande users
+# Fonction de gestion de la commande host
 
 function host {
   case $1 in
@@ -71,6 +71,17 @@ function host {
       ;;
     * )
       host_usage
+      ;;
+  esac
+}
+
+# Fonction de gestion de la commande afinger
+
+function afinger {
+  case $1 in
+
+    * )
+      afinger_usage
       ;;
   esac
 }
