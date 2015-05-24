@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 # Fonction détaillant l'utilisation de la commande users
-function user_usage {
-  echo -e "Utilisations possibles: \n-a [nomUser] [passwd]\n-d [nomUser]\n-p [nomUser] [passwd]\n+r [nomUser] [machine] \n-r [nomUser] [machine]"
+function users_usage {
+  echo -e "Utilisations possibles: \n-a [nomUser]\n-d [nomUser]\n-p [nomUser]\n+r [nomUser] [machine] \n-r [nomUser] [machine]\n-l\-lp"
 }
 
 # Fonction d'ajout d'utilisateur
-function user_add {
+function users_add {
   # On test si l'utilisateur existe
     if  ! grep -q $1 admin/passwd ; then
       echo -e "$1\nMot de passe : "
@@ -20,7 +20,7 @@ function user_add {
 }
 
 # Fonction de suppression d'utilisateur
-function user_del {
+function users_del {
   # On test si l'utilisateur existe
     if   grep -q $1 admin/list ; then
       sed -i "/$1/d" admin/list
@@ -33,7 +33,7 @@ function user_del {
 }
 
 # Fonction de modification de mot de passe
-function user_change_pass {
+function users_change_pass {
 
   if  grep -q $1 admin/passwd ; then
     sed -i "/$1/d" admin/passwd
@@ -47,7 +47,7 @@ function user_change_pass {
 }
 
 # Fonction d'ajout de droit
-function user_add_right {
+function users_add_right {
 
   if grep -q $1 admin/list ; then
 
@@ -68,7 +68,7 @@ function user_add_right {
 }
 
 # Fonction de suppression de droit
-function user_del_right {
+function users_del_right {
 
   if grep -q $1 admin/list ; then
 
@@ -86,4 +86,40 @@ function user_del_right {
   else
     echo "$1 n'existe pas dans la base."
   fi
+}
+
+# Fonction détaillant l'utilisation de la commande host
+function host_usage {
+  echo -e "Utilisations possibles: \n-a [machine]\n-d [machine]\n-l"
+}
+
+# Fonction d'ajout de machine
+function vm_add {
+  # On teste si la machine existe
+    if  ! grep -q $1 machines/list ; then
+      echo $1 >> machines/list ; touch machines/$1
+      echo "La machine $1 vient d'etre ajoutee."
+    else
+      echo "$1 existe deja dans la base."
+    fi
+
+
+}
+
+# Fonction de suppression de machine
+function vm_del {
+  # On teste si la machine existe
+    if   grep -q $1 machines/list ; then
+      sed -i "/$1/d" machines/list
+      rm machines/$1
+
+      echo "Suppression des permissions sur $1."
+      sed -i "s/$1//g" admin/list # Suppression des permissions sur $1.
+
+      echo "La machine $1 vient d'etre supprimee."
+    else
+      echo "$1 n'existe pas dans la base."
+    fi
+
+
 }

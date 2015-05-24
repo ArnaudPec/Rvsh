@@ -30,28 +30,48 @@ function loop {
 function users {
   case $1 in
     -a )
-        user_add $2
+        users_add $2
       ;;
     -d )
-        user_del $2
+        users_del $2
       ;;
     -p )
-        user_change_pass $2
+        users_change_pass $2
       ;;
     +r )
-        user_add_right $2 $3
+        users_add_right $2 $3
       ;;
     -r )
-        user_del_right $2 $3
+        users_del_right $2 $3
       ;;
     -l )
       cat admin/list | cut -f1 -d ' '
       ;;
-    * )
-      user_usage
+    -lp )
+      cat admin/list
       ;;
+    * )
+      users_usage
+      ;;
+  esac
+}
 
+# Fonction de gestion de la commande users
 
+function host {
+  case $1 in
+    -a )
+        vm_add $2
+      ;;
+    -d )
+        vm_del $2
+      ;;
+    -l )
+        cat machines/list
+      ;;
+    * )
+      host_usage
+      ;;
   esac
 }
 
