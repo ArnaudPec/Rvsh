@@ -17,20 +17,10 @@ function  checkAdmin {
 }
 
 function init {
-  mkdir -p admin && echo $1 >> admin/admin
-  touch admin/{list,passwd}
+  mkdir -p admin users machines && echo $1 >> admin/admin
+  touch admin/{list,passwd} machines/list
 }
 
-function checkPassAdmin {
-  read -r < admin/admin var
-  if [[ ! $var == $1 ]]; then
-    echo "Mot de passe faux"
-    exit 0
-  else
-    echo "acces autorise"
-  fi
-
-}
 
 #function checkPassUser{
 #  read -r < admin/list var
@@ -42,3 +32,30 @@ function checkPassAdmin {
 #  fi
 
 #}
+
+function printLogo {
+
+echo '
+ /$$$$$$$  /$$    /$$  /$$$$$$  /$$   /$$
+| $$__  $$| $$   | $$ /$$__  $$| $$  | $$
+| $$  \ $$| $$   | $$| $$  \__/| $$  | $$
+| $$$$$$$/|  $$ / $$/|  $$$$$$ | $$$$$$$$
+| $$__  $$ \  $$ $$/  \____  $$| $$__  $$
+| $$  \ $$  \  $$$/   /$$  \ $$| $$  | $$
+| $$  | $$   \  $/   |  $$$$$$/| $$  | $$
+|__/  |__/    \_/     \______/ |__/  |__/
+'
+
+}
+
+
+function checkPassAdmin {
+  read -r < admin/admin var
+  if [[ ! $var == $1 ]]; then
+    echo "Mot de passe faux"
+    exit 0
+  else
+      clear && printLogo
+  fi
+
+}

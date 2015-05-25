@@ -12,7 +12,7 @@ function users_add {
       echo -e "$1\nMot de passe : "
       read -sr var
       echo $1 >> admin/list ; echo $1 $var >> admin/passwd
-      mkdir -p users; touch users/$1
+      touch users/$1
       afinger -e $1 # On renseigne les informations
     else
       echo "$1 existe deja dans la base."
@@ -98,7 +98,6 @@ function host_usage {
 
 # Fonction d'ajout de machine
 function vm_add {
-  mkdir -p machines/ && touch machines/list
   # On teste si la machine existe
     if  ! grep -q $1 machines/list ; then
       echo $1 >> machines/list ; touch machines/$1
