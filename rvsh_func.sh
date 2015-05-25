@@ -4,7 +4,7 @@ function usage {
   echo -e "Erreur: mauvaise syntaxe.\nMode connect : rvsh -connect  [nomMachine] [nomUser]\nMode admin : rvsh -admin"
 }
 
-function  checkInit {
+function checkInit {
   return $(test -e admin/admin)
 }
 
@@ -12,8 +12,6 @@ function init {
   mkdir -p admin users machines && echo $1 >> admin/admin
   touch admin/{list,passwd} machines/list
 }
-
-
 
 function checkPassAdmin {
   read -r < admin/admin var

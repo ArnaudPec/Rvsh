@@ -17,8 +17,6 @@ function users_add {
     else
       echo "$1 existe deja dans la base."
     fi
-
-
 }
 
 # Fonction de suppression d'utilisateur
@@ -105,8 +103,6 @@ function vm_add {
     else
       echo "$1 existe deja dans la base."
     fi
-
-
 }
 
 # Fonction de suppression de machine
@@ -123,8 +119,6 @@ function vm_del {
     else
       echo "$1 n'existe pas dans la base."
     fi
-
-
 }
 
 # Fonction détaillant l'utilisation de la commande afinger

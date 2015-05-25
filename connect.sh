@@ -24,6 +24,16 @@ function loop {
 
 }
 
+# Fonction de gestion de la commande rhost
+
+function rhost {
+  if [[ $# -eq 0 ]]; then
+    rhost_print
+  else
+    rhost_usage
+  fi
+}
+
 printLogo
 
 loop

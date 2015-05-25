@@ -9,7 +9,7 @@ source connect_func.sh
 # Fonction définnissant la boucle du prompt admin
 P1="rvsh>"
 
-function loop {
+function loop_admin {
   while true :
   do
 
@@ -95,4 +95,4 @@ function afinger {
 
 printLogo
 # Lancement du prompt
-loop
+loop_admin
