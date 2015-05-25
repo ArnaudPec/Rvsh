@@ -79,7 +79,12 @@ function host {
 
 function afinger {
   case $1 in
-
+    -e )
+      afinger_edit $2
+      ;;
+    -l )
+      afinger_show $2
+      ;;
     * )
       afinger_usage
       ;;

@@ -2,7 +2,7 @@
 
 # Fonction détaillant l'utilisation de la commande users
 function users_usage {
-  echo -e "Utilisations possibles: \n-a [nomUser]\n-d [nomUser]\n-p [nomUser]\n+r [nomUser] [machine] \n-r [nomUser] [machine]\n-l\-lp"
+  echo -e "Utilisations possibles: \n-a [nomUser]\n-d [nomUser]\n-p [nomUser]\n+r [nomUser] [machine] \n-r [nomUser] [machine]\n-l\n-lp"
 }
 
 # Fonction d'ajout d'utilisateur
@@ -12,6 +12,8 @@ function users_add {
       echo -e "$1\nMot de passe : "
       read -sr var
       echo $1 >> admin/list ; echo $1 $var >> admin/passwd
+      mkdir -p users; touch users/$1
+      afinger -e $1 # On renseigne les informations
     else
       echo "$1 existe deja dans la base."
     fi
@@ -25,6 +27,7 @@ function users_del {
     if   grep -q $1 admin/list ; then
       sed -i "/$1/d" admin/list
       sed -i "/$1/d" admin/passwd
+      rm users/$1
     else
       echo "$1 n'existe pas dans la base."
     fi
@@ -126,5 +129,28 @@ function vm_del {
 
 # Fonction détaillant l'utilisation de la commande afinger
 function afinger_usage {
-  echo -e "Utilisations possibles: \n- "
+  echo -e "Utilisations possibles: \n-e [nomUser]\n-l [nomUser] "
+}
+
+# Fonction permettant l'édition des infos utilisateur
+function afinger_edit {
+  # On test si l'utilisateur existe
+    if   grep -q $1 admin/list ; then
+      echo "Nom :" ; read -r nom
+      echo -e "Login : $1\nName : $nom" > users/$1
+    else
+      echo "$1 n'existe pas dans la base."
+    fi
+
+}
+
+# Fonction permettant d'afficher des infos utilisateur
+function afinger_show {
+  # On test si l'utilisateur existe
+    if   grep -q $1 admin/list ; then
+      cat users/$1
+    else
+      echo "$1 n'existe pas dans la base."
+    fi
+
 }
