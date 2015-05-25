@@ -1,1 +1,1 @@
-rm -r admin machines users
+rm -r admin/ machines/ users/

@@ -18,6 +18,7 @@ function  checkAdmin {
 
 function init {
   mkdir -p admin && echo $1 >> admin/admin
+  touch admin/{list,passwd}
 }
 
 function checkPassAdmin {

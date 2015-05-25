@@ -98,6 +98,7 @@ function host_usage {
 
 # Fonction d'ajout de machine
 function vm_add {
+  mkdir -p machines/ && touch machines/list
   # On teste si la machine existe
     if  ! grep -q $1 machines/list ; then
       echo $1 >> machines/list ; touch machines/$1
