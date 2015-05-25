@@ -3,6 +3,8 @@
 # Inclusion des fonctions de la partie administrateur
 source admin_func.sh
 
+# Inclusion des fonctions de la partie connect
+source connect_func.sh
 
 # Fonction définnissant la boucle du prompt admin
 P1="rvsh>"
@@ -91,5 +93,6 @@ function afinger {
   esac
 }
 
+printLogo
 # Lancement du prompt
 loop
