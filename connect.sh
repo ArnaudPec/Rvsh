@@ -34,6 +34,26 @@ function rhost {
   fi
 }
 
+function su {
+
+  if [[ $# -eq 1 ]]; then
+    #statements
+    #machine= cut -f2 -d '@' P1
+    #former_machine=${P1%*@}
+    p2=${P1#*@}
+    if  grep -q "$1 ${p2%*>}" admin/list   ; then
+    #statements
+    #echo "$1"
+
+    P1="$1@${P1#*@}"
+    else
+    echo "Cet utilisateur n'existe pas"
+    fi
+  else
+  su_usage
+  fi
+}
+
 printLogo
 
 loop

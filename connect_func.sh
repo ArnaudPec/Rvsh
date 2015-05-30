@@ -22,3 +22,7 @@ function rhost_print {
   cat machines/list
   echo "=================================="
 }
+
+function su_usage {
+  echo -e "Utilisations possibles: \nsu [nameUser]"
+}
