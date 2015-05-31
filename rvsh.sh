@@ -5,7 +5,7 @@
 #set –x
 source rvsh_func.sh # Inclusion des fonctions de lancement du script
 source admin_func.sh # Inclusion des fonctions du mode admin
-source connect.sh # Inclusion des fonctions du mode connect
+source connect_func.sh # Inclusion des fonctions du mode connect
 
 if [[ $1 == "-connect" && $# -eq 3 ]]; then
   checkInit

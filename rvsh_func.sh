@@ -13,7 +13,7 @@ function checkInit {
 # Fonction d'initialisation voir function checkInit
 function init {
   mkdir -p admin users machines && echo $1 >> admin/admin
-  touch admin/{list,passwd} machines/list
+  touch admin/{list,passwd} #machines/list
 }
 
 # Vérifier si le mot de passe admin est juste

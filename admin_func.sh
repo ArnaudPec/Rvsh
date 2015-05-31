@@ -48,7 +48,8 @@ function users_add_right {
 
   if grep -q $1 admin/list ; then
 
-    if grep -q "$2$" machines/list ; then
+    #if grep -q "$2$" machines/list ; then
+    if [[ -r machines/$2 ]]; then
       if grep  -q "^$1 .*$2" admin/list ; then
         echo  "$1 est deja autorise sur $2."
       else
@@ -68,7 +69,8 @@ function users_del_right {
 
   if grep -q $1 admin/list ; then
 
-    if grep -q "$2$" machines/list ; then
+    #if grep -q "$2$" machines/list ; then
+    if [[ -r machines/$2 ]]; then
       if grep -q  "^$1 .*$2" admin/list; then
         echo "Suppression de l'autorisation de $1 sur $2."
         grep $1 admin/list | sed "s/$2//" >> admin/list # On supprime la machine de la ligne de l'utilisateur et on réecrit cette ligne en fin de fichier
@@ -92,8 +94,10 @@ function host_usage {
 # Fonction d'ajout de machine
 function vm_add {
   # On teste si la machine existe
-    if  ! grep -q $1 machines/list ; then
-      echo $1 >> machines/list ; touch machines/$1
+  #  if  ! grep -q $1 machines/list ; then
+    if [[ ! -f machines/$1 ]]; then
+    #  echo $1 >> machines/list ;
+      touch machines/$1
       echo "La machine $1 vient d'etre ajoutee."
     else
       echo "$1 existe deja dans la base."
@@ -103,8 +107,9 @@ function vm_add {
 # Fonction de suppression de machine
 function vm_del {
   # On teste si la machine existe
-    if   grep -q $1 machines/list ; then
-      sed -i "/$1/d" machines/list
+    #if   grep -q $1 machines/list ; then
+    if [[ -f machines/$1 ]]; then
+      #sed -i "/$1/d" machines/list
       rm machines/$1
 
       echo "Suppression des permissions sur $1."
@@ -126,7 +131,8 @@ function afinger_edit {
   # On test si l'utilisateur existe
     if   grep -q $1 admin/list ; then
       echo "Nom :" ; read -r nom
-      echo -e "Login : $1\nName : $nom" > users/$1
+      echo "Email :" ; read -r email
+      echo -e "Login : $1\nName : $nom\nEmail : $email\nSessions actives :" > users/$1
     else
       echo "$1 n'existe pas dans la base."
     fi
@@ -161,7 +167,8 @@ function a_host {
   case $1 in
     -a ) vm_add $2 ;;
     -d ) vm_del $2 ;;
-    -l ) cat machines/list ;;
+  #  -l ) cat machines/list ;;
+    -l ) for i in machines/* ; do echo -e "$(basename $i)" ; done ;;
     * ) host_usage ;;
   esac
 }
