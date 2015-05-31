@@ -17,9 +17,10 @@ function checkPassAdmin {
   read -r < admin/admin var
   if [[ ! $var == $1 ]]; then
     echo "Mot de passe faux"
-    exit 0
+    return 1
   else
-      clear # && printLogo
+    clear
+    return 0
   fi
 }
 
