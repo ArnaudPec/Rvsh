@@ -184,12 +184,38 @@ function u_write {
     checkUserConnected $u $m
     if [[ $? -eq 0 ]]; then
       echo "$u connecte sur $m"
-      echo "Message de $P1 : $2" >> $(grep -m 1 "$u" machines/$m | cut -f2 -d " ") 
+      echo "Message de $P1 : $2" >> $(grep -m 1 "$u" machines/$m | cut -f2 -d " ")
     else
       echo "$u non connecte sur $m"
     fi
   else
     write_usage
+  fi
+}
+
+function su_usage {
+  echo -e "Utilisation possibles:\nsu [nomUser]"
+}
+
+function u_su {
+
+  if [[ $# -eq 1 ]]; then
+    p=${P1#*@}
+    u_connect ${p%*>} $1 #connexion
+    #statements
+    #machine= cut -f2 -d '@' P1
+    #former_machine=${P1%*@}
+    #p2=${P1#*@}
+    #if  grep -q "$1 ${p2%*>}" admin/list   ; then
+    #statements
+    #echo "$1"
+
+    #P1="$1@${P1#*@}"
+    #else
+    #echo "Cet utilisateur n'existe pas"
+    #fi
+  else
+  su_usage
   fi
 }
 
