@@ -228,4 +228,7 @@ function u_quitter {
   echo
   del_log_user $u $m $(tty)
   break
+
+function su_usage {
+  echo -e "Utilisations possibles: \nsu [nameUser]"
 }
