@@ -42,17 +42,18 @@ function su {
     #former_machine=${P1%*@}
     p2=${P1#*@}
     if  grep -q "$1 ${p2%*>}" admin/list   ; then
-    #statements
-    #echo "$1"
-
-    P1="$1@${P1#*@}"
+      P1="$1@${P1#*@}"
     else
-    echo "Cet utilisateur n'existe pas"
+      echo "Cet utilisateur n'existe pas"
     fi
   else
-  su_usage
+    su_usage
   fi
 }
+
+
+
+
 
 printLogo
 
