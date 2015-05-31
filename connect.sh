@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 function printLogo {
 
   echo '
@@ -15,8 +14,7 @@ function printLogo {
 '
 }
 
-
-function connect {
+function u_connect {
 
     clear
 
@@ -43,14 +41,20 @@ function rhost_print {
 }
 
 
-# Fonction définnissant la boucle du prompt
+# Fonction définissant la boucle du prompt
 
 function loop {
   printLogo
 
   while true :
   do
-    P1="$1@$2>"
+
+    if [[ $1 == "admin" ]]; then
+      P1="rvsh>"
+    else
+      P1="$1@$2>"
+    fi
+
     echo -n "$P1"
     read commande args
 
@@ -61,13 +65,11 @@ function loop {
   	fi
 
   done;
-
-
 }
 
 # Fonction de gestion de la commande rhost
 
-function rhost {
+function u_rhost {
   if [[ $# -eq 0 ]]; then
     rhost_print
   else
@@ -77,6 +79,6 @@ function rhost {
 
 # Fonction permettant de quitter la boucle courante, c'est à dire deconnecter l'utilisateur courant; si
 # c'est l'utilisateur du lancement du script, cela permet de quitter le programme
-function exit {
+function u_quitter {
   break
 }
