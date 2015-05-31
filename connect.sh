@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
+# Fonction d'affichage du logo
 function printLogo {
-
   echo '
  /$$$$$$$  /$$    /$$  /$$$$$$  /$$   /$$
 | $$__  $$| $$   | $$ /$$__  $$| $$  | $$
@@ -14,10 +14,9 @@ function printLogo {
 '
 }
 
+# Fonction de gestion des connexions
 function u_connect {
-
     clear
-
     echo "$2 : Saisir le mot de passe"
     read  -sr passwd
     checkConnect $1 $2 $passwd
@@ -25,8 +24,6 @@ function u_connect {
     if [[ $? -eq 0 ]]; then
       loop  $2 $1
     fi
-
-
 }
 
 # Fonction détaillant l'utilisation de la commande rhost
@@ -42,33 +39,34 @@ function rhost_print {
 
 
 # Fonction définissant la boucle du prompt
-
 function loop {
   printLogo
 
   while true :
   do
 
-    if [[ $1 == "admin" ]]; then
-      P1="rvsh>"
-    else
-      P1="$1@$2>"
+    if [[ $1 == "admin" ]]; then  P1="rvsh>"
+    else P1="$1@$2>"
     fi
 
     echo -n "$P1"
     read commande args
 
-    if [ "$(type -t $commande)" = "function" ]; then
-  	    $commande $args
+    if [ "$(type -t "a_$commande")" = "function" ]; then
+      if [[ $1 == "admin" ]]; then
+        a_$commande $args
+      else
+        echo "Non autorise."
+      fi
+    elif [[ "$(type -t "u_$commande")" = "function"  ]]; then
+      u_$commande $args
   	else
   	    echo "Commande inexistante"
   	fi
-
   done;
 }
 
 # Fonction de gestion de la commande rhost
-
 function u_rhost {
   if [[ $# -eq 0 ]]; then
     rhost_print

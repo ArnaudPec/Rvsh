@@ -10,7 +10,7 @@ function checkInit {
   return $(test -e admin/admin)
 }
 
-# Fonction d'initialisation voir @checkInit
+# Fonction d'initialisation voir function checkInit
 function init {
   mkdir -p admin users machines && echo $1 >> admin/admin
   touch admin/{list,passwd} machines/list
@@ -34,7 +34,7 @@ function checkMachine {
 }
 
 # Tester l'existence de l'utilisateur qui tente de se connecter
-function  checkUser {
+function checkUser {
   return $(test -e users/$1)
 }
 
@@ -64,7 +64,6 @@ function checkConnect {
           echo "Mot de passe faux"
           return 1
         fi
-
         else
         echo "L'utilisateur $2 n'est pas autorisé sur $1."
         return 1

@@ -13,7 +13,7 @@ function users_add {
       read -sr var
       echo $1 >> admin/list ; echo $1 $var >> admin/passwd
       touch users/$1
-      afinger -e $1 # On renseigne les informations
+      a_afinger -e $1 # On renseigne les informations
     else
       echo "$1 existe deja dans la base."
     fi
@@ -29,13 +29,10 @@ function users_del {
     else
       echo "$1 n'existe pas dans la base."
     fi
-
-
 }
 
 # Fonction de modification de mot de passe
 function users_change_pass {
-
   if  grep -q $1 admin/passwd ; then
     sed -i "/$1/d" admin/passwd
     echo -e "$1\nNouveau mot de passe : "
@@ -44,7 +41,6 @@ function users_change_pass {
   else
     echo "$1 n'existe pas dans la base."
   fi
-
 }
 
 # Fonction d'ajout de droit
@@ -58,7 +54,6 @@ function users_add_right {
       else
         echo "Autorisation de $1 sur $2."
         sed -i "s/\($1\)/\1 $2/" admin/list
-
       fi
     else
       echo "$2 n'existe pas sur le réseau"
@@ -135,7 +130,6 @@ function afinger_edit {
     else
       echo "$1 n'existe pas dans la base."
     fi
-
 }
 
 # Fonction permettant d'afficher des infos utilisateur
@@ -146,14 +140,12 @@ function afinger_show {
     else
       echo "$1 n'existe pas dans la base."
     fi
-
 }
 
 # Fonction de gestion de la commande users
-
 function a_users {
   case $1 in
-    -a ) users_add $ ;;
+    -a ) users_add $2 ;;
     -d ) users_del $2 ;;
     -p ) users_change_pass $2 ;;
     +r ) users_add_right $2 $3 ;;
@@ -165,7 +157,6 @@ function a_users {
 }
 
 # Fonction de gestion de la commande host
-
 function a_host {
   case $1 in
     -a ) vm_add $2 ;;
@@ -176,7 +167,6 @@ function a_host {
 }
 
 # Fonction de gestion de la commande afinger
-
 function a_afinger {
   case $1 in
     -e ) afinger_edit $2 ;;
