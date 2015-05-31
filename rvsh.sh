@@ -5,28 +5,12 @@
 
 # Inclusion des fonctions de connexions
 source rvsh_func.sh
+source admin.sh
+source connect.sh
 
   if [[ $1 == "-connect" && $# -eq 3 ]]; then
 
-    checkInit
-    if [[ $? -eq 0 ]]; then
-      clear
-
-      echo "$3 : Saisir le mot de passe"
-      read  -sr passwd
-      connect $2 $3 $passwd
-
-      if [[ $? -eq 0 ]]; then
-        bash connect.sh $3 $2
-      else
-        exit 0
-      fi
-
-    else
-
-      echo -e "Le systeme n'est pas initialise.\nVeuillez lancer rvsh -admin."
-
-    fi
+    connect $2 $3
 
   elif [[ $1 == "-admin" && $# -eq 1 ]]; then
     clear
@@ -37,7 +21,7 @@ source rvsh_func.sh
       read  -sr passwd
       checkPassAdmin $passwd
 
-      bash admin.sh
+     bash admin.sh
 
     else
 
@@ -45,7 +29,7 @@ source rvsh_func.sh
       read  -sr passwd
       init $passwd
 
-      bash admin.sh
+     bash admin.sh
 
     fi
 

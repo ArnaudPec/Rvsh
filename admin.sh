@@ -93,6 +93,6 @@ function afinger {
   esac
 }
 
-printLogo
+#printLogo
 # Lancement du prompt
-loop_admin
+#loop_admin

@@ -45,7 +45,7 @@ function checkRight {
 
 # Fonction regroupant les 4 tests qui précèdent une connexion : existence de la machine,
 # existence de l'utilisateur, vérification des autorisations et du mot de passe
-function connect {
+function checkConnect {
   checkMachine $1
   if [[ $? -eq 0 ]]; then
     checkUser $2
