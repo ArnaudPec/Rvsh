@@ -138,7 +138,7 @@ function u_rusers {
 
 # Fonction détaillant l'utilisation de la commande rusers
 function rusers_usage {
-  echo -e "Utilisations possible: \nrusers"
+  echo -e "Utilisation possible: \nrusers"
 }
 # Fonction de gestion de la commande rusers
 function u_rusers {
@@ -156,14 +156,40 @@ function u_rusers {
 
 # Fonction détaillant l'utilisation de la commande passwd
 function passwd_usage {
-  echo -e "Utilisations possible: \npasswd"
+  echo -e "Utilisation possible: \npasswd"
 }
 # Fonction de gestion de la commande passwd
 function u_passwd {
   if [[ $# -eq 0 ]]; then
-    users_change_pass  $(echo $P1 | cut -f1 -d "@") 
+    users_change_pass  $(echo $P1 | cut -f1 -d "@")
   else
     passwd_usage
+  fi
+}
+
+function checkUserConnected {
+  return $(grep -q $1 machines/$2)
+}
+
+# Fonction détaillant l'utilisation de la commande write
+function write_usage {
+  echo -e "Utilisation possible: \nwrite [nomUser]@[machine] [message]"
+}
+# Fonction de gestion de la commande write
+function u_write {
+  if [[ $# -eq 2 ]]; then
+    #on vérifie si l'utilisateur donné est bien connecté sur la machine donnée
+    u=$(echo $1 | cut -f1 -d "@")
+    m=$(echo $1 | cut -f2 -d "@")
+    checkUserConnected $u $m
+    if [[ $? -eq 0 ]]; then
+      echo "$u connecte sur $m"
+      echo "Message de $P1 : $2" >> $(grep -m 1 "$u" machines/$m | cut -f2 -d " ") 
+    else
+      echo "$u non connecte sur $m"
+    fi
+  else
+    write_usage
   fi
 }
 
