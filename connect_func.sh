@@ -23,12 +23,15 @@ function add_log_user {
 
 # Fonction de suppression des logs à la déconnexion
 function del_log_user {
-  #echo $3
-  t=$(echo $3 | sed 's@/@\\/@g')
-  #echo $t
-  sed -i "/$2 $t/d" users/$1
-  sed -i "/$1 $t/d" machines/$2
-}
+  if [[ $# -eq 3 ]]; then
+    t=$(echo $3 | sed 's@/@\\/@g')
+    sed -i "/$2 $t/d" users/$1
+    sed -i "/$1 $t/d" machines/$2
+  #else
+    #sed -i "/$2 /d" $1
+    #sed -i "/$1 /d" $2
+  fi
+  }
 
 # Fonction de gestion des connexions
 function u_connect {
@@ -202,18 +205,6 @@ function u_su {
   if [[ $# -eq 1 ]]; then
     p=${P1#*@}
     u_connect ${p%*>} $1 #connexion
-    #statements
-    #machine= cut -f2 -d '@' P1
-    #former_machine=${P1%*@}
-    #p2=${P1#*@}
-    #if  grep -q "$1 ${p2%*>}" admin/list   ; then
-    #statements
-    #echo "$1"
-
-    #P1="$1@${P1#*@}"
-    #else
-    #echo "Cet utilisateur n'existe pas"
-    #fi
   else
   su_usage
   fi
@@ -222,13 +213,15 @@ function u_su {
 # Fonction permettant de quitter la boucle courante, c'est à dire deconnecter l'utilisateur courant; si
 # c'est l'utilisateur du lancement du script, cela permet de quitter le programme
 function u_quitter {
-  echo $P1
   u=$(echo $P1 | cut -f1 -d "@")
   m=$(echo $P1 | cut -f2 -d "@" | cut -f1 -d ">" )
-  echo
   del_log_user $u $m $(tty)
   break
-
+}
 function su_usage {
   echo -e "Utilisations possibles: \nsu [nameUser]"
+}
+
+function u_help {
+  echo -e "Commandes disponibles :\nconnect\nsu\nwrite\nfinger\nwho\nrusers\nrhost\nhelp\npasswd \nquitter"
 }

@@ -68,7 +68,6 @@ function users_add_right {
 function users_del_right {
 
   if grep -q $1 admin/list ; then
-
     #if grep -q "$2$" machines/list ; then
     if [[ -r machines/$2 ]]; then
       if grep -q  "^$1 .*$2" admin/list; then
@@ -167,7 +166,6 @@ function a_host {
   case $1 in
     -a ) vm_add $2 ;;
     -d ) vm_del $2 ;;
-  #  -l ) cat machines/list ;;
     -l ) for i in machines/* ; do echo -e "$(basename $i)" ; done ;;
     * ) host_usage ;;
   esac
