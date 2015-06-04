@@ -10,8 +10,10 @@ function users_add {
   # On test si l'utilisateur existe
     if  ! grep -q $1 admin/passwd ; then
       echo -e "$1\nMot de passe : "
-      read -sr var
-      echo $1 >> admin/list ; echo $1 $var >> admin/passwd
+      read -sr passwd
+      md_pass=$(echo $passwd | md5sum | sed "s/^\(.*\) -/\1/" )
+
+      echo $1 >> admin/list ; echo $1 $md_pass >> admin/passwd
       touch users/$1
       a_afinger -e $1 # On renseigne les informations
     else
@@ -36,8 +38,10 @@ function users_change_pass {
   if  grep -q $1 admin/passwd ; then
     sed -i "/$1/d" admin/passwd
     echo -e "$1\nNouveau mot de passe : "
-    read -sr var
-    echo $1 $var >> admin/passwd
+    read -sr passwd
+    md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/"  )
+
+    echo $1 $md_pass >> admin/passwd
   else
     echo "$1 n'existe pas dans la base."
   fi

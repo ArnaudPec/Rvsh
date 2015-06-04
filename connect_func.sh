@@ -27,9 +27,6 @@ function del_log_user {
     t=$(echo $3 | sed 's@/@\\/@g')
     sed -i "/$2 $t/d" users/$1
     sed -i "/$1 $t/d" machines/$2
-  #else
-    #sed -i "/$2 /d" $1
-    #sed -i "/$1 /d" $2
   fi
   }
 
@@ -37,8 +34,10 @@ function del_log_user {
 function u_connect {
     clear
     echo "$2 : Saisir le mot de passe"
-    read  -sr passwd
-    checkConnect $1 $2 $passwd
+    read -sr passwd
+    md_pass=$(echo $passwd | md5sum | sed "s/^\(.*\) -/\1/" )
+    echo $md_pass
+    checkConnect $1 $2 $md_pass
 
     if [[ $? -eq 0 ]]; then
       add_log_user $2 $1
