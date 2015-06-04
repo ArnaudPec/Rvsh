@@ -23,10 +23,12 @@ elif [[ $1 == "-admin" && $# -eq 1 ]]; then
     echo "Saisir le mot de passe admin"
     read -sr passwd
     md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/" )
-    checkPassAdmin $md_pass
+
+    checkPassUser admin $md_pass
     if [[ $? -eq 0 ]]; then
       loop  "admin"
     else
+      echo "Mot de passe faux."
       exit 0
     fi
   else

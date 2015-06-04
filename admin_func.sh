@@ -97,9 +97,7 @@ function host_usage {
 # Fonction d'ajout de machine
 function vm_add {
   # On teste si la machine existe
-  #  if  ! grep -q $1 machines/list ; then
     if [[ ! -f machines/$1 ]]; then
-    #  echo $1 >> machines/list ;
       touch machines/$1
       echo "La machine $1 vient d'etre ajoutee."
     else
@@ -110,9 +108,7 @@ function vm_add {
 # Fonction de suppression de machine
 function vm_del {
   # On teste si la machine existe
-    #if   grep -q $1 machines/list ; then
     if [[ -f machines/$1 ]]; then
-      #sed -i "/$1/d" machines/list
       rm machines/$1
 
       echo "Suppression des permissions sur $1."

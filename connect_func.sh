@@ -36,7 +36,6 @@ function u_connect {
     echo "$2 : Saisir le mot de passe"
     read -sr passwd
     md_pass=$(echo $passwd | md5sum | sed "s/^\(.*\) -/\1/" )
-    echo $md_pass
     checkConnect $1 $2 $md_pass
 
     if [[ $? -eq 0 ]]; then
@@ -102,7 +101,11 @@ function finger_usage {
 # Fonction de gestion de la commande finger
 function u_finger {
   if [[ $# -eq 0 ]]; then
-    a_afinger -l $(echo $P1 | cut -f1 -d "@")
+    if [[ $P1 == "rvsh>" ]]; then
+      echo "Compte Administrateur : console d'administration."
+    else
+      a_afinger -l $(echo $P1 | cut -f1 -d "@")
+    fi
   else
     finger_usage
   fi
@@ -115,7 +118,11 @@ function who_usage {
 # Fonction de gestion de la commande who
 function u_who {
   if [[ $# -eq 0 ]]; then
-    cat machines/$(echo $P1 | cut -f2 -d "@" | cut -f1 -d ">")
+    if [[ $P1 == "rvsh>" ]]; then
+      echo "Admin : unique utilisateur de la console d'administration"
+    else
+      cat machines/$(echo $P1 | cut -f2 -d "@" | cut -f1 -d ">")
+    fi
   else
     who_usage
   fi
@@ -163,7 +170,11 @@ function passwd_usage {
 # Fonction de gestion de la commande passwd
 function u_passwd {
   if [[ $# -eq 0 ]]; then
-    users_change_pass  $(echo $P1 | cut -f1 -d "@")
+    if [[ $P1 == "rvsh>" ]]; then
+      users_change_pass admin
+    else
+      users_change_pass  $(echo $P1 | cut -f1 -d "@")
+    fi
   else
     passwd_usage
   fi
@@ -210,8 +221,12 @@ function su_usage {
 function u_su {
 
   if [[ $# -eq 1 ]]; then
-    p=${P1#*@}
-    u_connect ${p%*>} $1 #connexion
+    if [[ $P1 == "rvsh>" ]]; then
+      echo "Les utilisateurs n'ont pas accès à la console d'administration"
+    else
+      p=${P1#*@}
+      u_connect ${p%*>} $1 #connexion
+    fi
   else
   su_usage
   fi
@@ -220,15 +235,23 @@ function u_su {
 # Fonction permettant de quitter la boucle courante, c'est à dire deconnecter l'utilisateur courant; si
 # c'est l'utilisateur du lancement du script, cela permet de quitter le programme
 function u_quitter {
-  u=$(echo $P1 | cut -f1 -d "@")
-  m=$(echo $P1 | cut -f2 -d "@" | cut -f1 -d ">" )
-  del_log_user $u $m $(tty)
-  break
+  if [[ $P1 == "rvsh>" ]]; then
+    break
+  else
+    u=$(echo $P1 | cut -f1 -d "@")
+    m=$(echo $P1 | cut -f2 -d "@" | cut -f1 -d ">" )
+    del_log_user $u $m $(tty)
+    break
+  fi
 }
 function su_usage {
   echo -e "Utilisations possibles: \nsu [nameUser]"
 }
 
 function u_help {
-  echo -e "Commandes disponibles :\nconnect\nsu\nwrite\nfinger\nwho\nrusers\nrhost\nhelp\npasswd \nquitter"
+  echo -e "Commandes disponibles :\nconnect\nclear\nsu\nwrite\nfinger\nwho\nrusers\nrhost\nhelp\npasswd \nquitter"
+}
+
+function u_clear {
+  clear
 }

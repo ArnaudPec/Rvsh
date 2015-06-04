@@ -7,18 +7,18 @@ function usage {
 
 # Vérifier que le système est initialisé, c'est-à-dire répertoires de travail créés
 function checkInit {
-  return $(test -e admin/admin)
+  return $(test -e admin/passwd)
 }
 
 # Fonction d'initialisation voir function checkInit
 function init {
-  mkdir -p admin users machines && echo $1 >> admin/admin
-  touch admin/{list,passwd} #machines/list
+  mkdir -p admin users machines && echo "admin" $1 >> admin/passwd
+  touch admin/list #machines/list
 }
 
 # Vérifier si le mot de passe admin est juste
 function checkPassAdmin {
-  read -r < admin/admin var
+  read -r < admin/passwd var
   if [[ ! $var == $1 ]]; then
     echo "Mot de passe faux"
     return 1
