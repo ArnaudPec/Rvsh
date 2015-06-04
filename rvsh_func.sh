@@ -88,3 +88,11 @@ function initial_clean {
   for j in users/*; do sed -ni  '1,4p' $j ;done
 }   
 
+
+# Fonction de nettoyage auto en cas d'appui sur ctrl + c
+function brutal_exit {
+  initial_clean
+  echo "Interruption brusque : nettoyage des logs."
+  exit 0
+}
+ trap brutal_exit SIGINT
