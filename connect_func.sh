@@ -180,14 +180,22 @@ function write_usage {
 }
 # Fonction de gestion de la commande write
 function u_write {
-  if [[ $# -eq 2 ]]; then
+  if [[ $# -ge 2 ]]; then
     #on vérifie si l'utilisateur donné est bien connecté sur la machine donnée
     u=$(echo $1 | cut -f1 -d "@")
     m=$(echo $1 | cut -f2 -d "@")
+
+    shift
+    while [[ $# -gt 0 ]]
+    do
+      message="$message $1"
+      shift
+    done
+
     checkUserConnected $u $m
     if [[ $? -eq 0 ]]; then
       echo "$u connecte sur $m"
-      echo "Message de $P1 : $2" >> $(grep -m 1 "$u" machines/$m | cut -f2 -d " ")
+      echo "Message de $P1 : $message" >> $(grep -m 1 "$u" machines/$m | cut -f2 -d " ")
     else
       echo "$u non connecte sur $m"
     fi
