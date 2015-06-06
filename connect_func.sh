@@ -144,9 +144,9 @@ function u_rusers {
 function u_passwd {
   if [[ $# -eq 0 ]]; then
     if [[ $P1 == "rvsh>" ]]; then
-      users_change_pass admin
+      users_ask_change_pass admin
     else
-      users_change_pass  $(echo $P1 | cut -f1 -d "@")
+      users_ask_change_pass  $(echo $P1 | cut -f1 -d "@")
     fi
   else
     passwd_usage

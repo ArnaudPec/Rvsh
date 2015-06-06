@@ -27,41 +27,44 @@ function users_del {
     fi
 }
 
-# # Fonction de modification de mot de passe
-# function users_change_pass {
-#   if  grep -q $1 admin/passwd ; then
-#     echo -en "[$1] Ancien mot de passe : "
-#     read -sr passwd
-#     md_pass=$(echo $passwd | md5sum | sed "s/^\(.*\) -/\1/"  )
-#     checkPassUser $1 $md_pass
-#
-#     if [[ $? -eq 0 ]]; then
-#
-#       sed -i "/$1/d" admin/passwd
-#       echo -en "\n[$1] Nouveau mot de passe : "
-#       read -sr passwd ; echo ' '
-#       md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/"  )
-#       echo $1 $md_pass >> admin/passwd
-#
-#     else
-#       echo "Mot de passe faux."
-#     fi
-#   else
-#     echo "$1 n'existe pas dans la base."
-#   fi
-# }
+# Fonction qui vérifie si l'utilisateur a le droit de changer son mot de passe : il connaît l'ancien
+function users_ask_change_pass {
+  if  grep -q $1 admin/passwd ; then
+
+    echo -en "[$1] Ancien mot de passe : "
+    read -sr passwd; echo " "
+    md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/"  )
+    checkPassUser $1 $md_pass
+
+    if [[ $? -eq 0 ]]; then
+      users_change_pass $1
+    else
+    echo "Mot de passe faux"
+    fi
+else
+  echo "$1 n'existe pas dans la base."
+fi
+
+}
 
 # Fonction de modification de mot de passe
 function users_change_pass {
   if  grep -q $1 admin/passwd ; then
 
+    # echo -en "[$1] Ancien mot de passe : "
+    # read -sr passwd; echo " "
+    # md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/"  )
+    # checkPassUser $1 $md_pass
+    #
+    # if [[ $? -eq 0 ]]; then
       sed -i "/$1/d" admin/passwd
       echo -en "[$1] Nouveau mot de passe : "
       read -sr passwd; echo " "
       md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/"  )
       echo $1 $md_pass >> admin/passwd
-
-
+    # else
+    #   echo "Mot de passe faux"
+    # fi
   else
     echo "$1 n'existe pas dans la base."
   fi
