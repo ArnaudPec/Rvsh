@@ -20,8 +20,7 @@ elif [[ $1 == "-admin" && $# -eq 1 ]]; then
   checkInit
   if [[ $? -eq 0 ]]; then
 #    initial_clean
-    echo "Saisir le mot de passe admin"
-    read -sr passwd
+    echo -n "Saisir le mot de passe admin : " ; read -sr passwd
     md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/" )
 
     checkPassUser admin $md_pass
@@ -32,7 +31,7 @@ elif [[ $1 == "-admin" && $# -eq 1 ]]; then
       exit 0
     fi
   else
-    echo -e "Creation du compte admin.\nVeuillez entrer un mot de passe : "
+    echo -en "Creation du compte admin.\nVeuillez entrer un mot de passe : "
     read  -sr passwd
     md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/" )
     init $md_pass

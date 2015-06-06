@@ -33,8 +33,9 @@ function del_log_user {
 # Fonction de gestion des connexions
 function u_connect {
     clear
-    echo "$2 : Saisir le mot de passe"
+    echo -n "[$2] Saisir le mot de passe : "
     read -sr passwd
+    echo " "
     md_pass=$(echo $passwd | md5sum | sed "s/^\(.*\) -/\1/" )
     checkConnect $1 $2 $md_pass
 
@@ -204,7 +205,7 @@ function u_write {
 
     checkUserConnected $u $m
     if [[ $? -eq 0 ]]; then
-      echo "$u connecte sur $m"
+      echo "$u connecte sur $m : message envoye."
       echo "Message de $P1 : $message" >> $(grep -m 1 "$u" machines/$m | cut -f2 -d " ")
     else
       echo "$u non connecte sur $m"

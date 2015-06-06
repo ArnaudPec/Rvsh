@@ -9,13 +9,12 @@ function users_usage {
 function users_add {
   # On test si l'utilisateur existe
     if  ! grep -q $1 admin/passwd ; then
-      echo -e "$1\nMot de passe : "
+      echo -en "[$1] Mot de passe : "
       read -sr passwd
       md_pass=$(echo $passwd | md5sum | sed "s/^\(.*\) -/\1/" )
-
       echo $1 >> admin/list ; echo $1 $md_pass >> admin/passwd
       touch users/$1
-      a_afinger -e $1 # On renseigne les informations
+      echo -e "" ; a_afinger -e $1 # On renseigne les informations
     else
       echo "$1 existe deja dans la base."
     fi
@@ -37,7 +36,7 @@ function users_del {
 function users_change_pass {
   if  grep -q $1 admin/passwd ; then
     sed -i "/$1/d" admin/passwd
-    echo -e "$1\nNouveau mot de passe : "
+    echo -en "$1\nNouveau mot de passe : "
     read -sr passwd
     md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/"  )
 
@@ -129,8 +128,8 @@ function afinger_usage {
 function afinger_edit {
   # On test si l'utilisateur existe
     if   grep -q $1 admin/list ; then
-      echo "Nom :" ; read -r nom
-      echo "Email :" ; read -r email
+      echo -n "Nom :" ; read -r nom
+      echo -n "Email :" ; read -r email
       echo -e "Login : $1\nName : $nom\nEmail : $email\nSessions actives :" > users/$1
     else
       echo "$1 n'existe pas dans la base."
