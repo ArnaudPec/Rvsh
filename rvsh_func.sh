@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-# Fonction d'usage du script
-function usage {
-  echo -e "Erreur: mauvaise syntaxe.\nMode connect : rvsh -connect  [nomMachine] [nomUser]\nMode admin : rvsh -admin"
-}
-
 # Vérifier que le système est initialisé, c'est-à-dire répertoires de travail créés
 function checkInit {
   return $(test -e admin/passwd)

@@ -25,8 +25,7 @@ function add_log_user {
 function del_log_user {
   if [[ $# -eq 3 ]]; then
     t=$(echo $3 | sed 's@/@\\/@g')
-    sed -i "/$2 $t/d" users/$1
-    sed -i "/$1 $t/d" machines/$2
+    sed -i "/$2 $t/d" users/$1 ; sed -i "/$1 $t/d" machines/$2
   fi
   }
 
@@ -36,18 +35,13 @@ function u_connect {
     echo -n "[$2] Saisir le mot de passe : "
     read -sr passwd
     echo " "
-    md_pass=$(echo $passwd | md5sum | sed "s/^\(.*\) -/\1/" )
+    md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/" )
     checkConnect $1 $2 $md_pass
 
     if [[ $? -eq 0 ]]; then
       add_log_user $2 $1
       loop  $2 $1
     fi
-}
-
-# Fonction détaillant l'utilisation de la commande rhost
-function rhost_usage {
-  echo -e "Utilisations possible: \nrhost"
 }
 
 function rhost_print {
@@ -62,7 +56,7 @@ function loop {
   clear ;printLogo
 
   while true :
-  do
+    do
 
     if [[ $1 == "admin" ]]; then  P1="rvsh>"
     else P1="$1@$2>"
@@ -94,11 +88,6 @@ function u_rhost {
   fi
 }
 
-
-# Fonction détaillant l'utilisation de la commande finger
-function finger_usage {
-  echo -e "Utilisations possible: \nfinger"
-}
 # Fonction de gestion de la commande finger
 function u_finger {
   if [[ $# -eq 0 ]]; then
@@ -112,10 +101,6 @@ function u_finger {
   fi
 }
 
-# Fonction détaillant l'utilisation de la commande who
-function who_usage {
-  echo -e "Utilisations possible: \nwho"
-}
 # Fonction de gestion de la commande who
 function u_who {
   if [[ $# -eq 0 ]]; then
@@ -129,10 +114,6 @@ function u_who {
   fi
 }
 
-# Fonction détaillant l'utilisation de la commande rusers
-function rusers_usage {
-  echo -e "Utilisations possible: \nrusers"
-}
 # Fonction de gestion de la commande rusers
 function u_rusers {
   if [[ $# -eq 0 ]]; then
@@ -146,10 +127,6 @@ function u_rusers {
   fi
 }
 
-# Fonction détaillant l'utilisation de la commande rusers
-function rusers_usage {
-  echo -e "Utilisation possible: \nrusers"
-}
 # Fonction de gestion de la commande rusers
 function u_rusers {
   if [[ $# -eq 0 ]]; then
@@ -163,11 +140,6 @@ function u_rusers {
   fi
 }
 
-
-# Fonction détaillant l'utilisation de la commande passwd
-function passwd_usage {
-  echo -e "Utilisation possible: \npasswd"
-}
 # Fonction de gestion de la commande passwd
 function u_passwd {
   if [[ $# -eq 0 ]]; then
@@ -185,10 +157,7 @@ function checkUserConnected {
   return $(grep -q $1 machines/$2)
 }
 
-# Fonction détaillant l'utilisation de la commande write
-function write_usage {
-  echo -e "Utilisation possible: \nwrite [nomUser]@[machine] [message]"
-}
+
 # Fonction de gestion de la commande write
 function u_write {
   if [[ $# -ge 2 ]]; then
@@ -213,10 +182,6 @@ function u_write {
   else
     write_usage
   fi
-}
-
-function su_usage {
-  echo -e "Utilisation possibles:\nsu [nomUser]"
 }
 
 function u_su {
@@ -244,9 +209,6 @@ function u_quitter {
     del_log_user $u $m $(tty)
     break
   fi
-}
-function su_usage {
-  echo -e "Utilisations possibles: \nsu [nameUser]"
 }
 
 function u_help {

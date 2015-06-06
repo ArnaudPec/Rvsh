@@ -1,17 +1,12 @@
 #!/usr/bin/env bash
 
-# Fonction détaillant l'utilisation de la commande users
-function users_usage {
-  echo -e "Utilisations possibles: \n-a [nomUser]\n-d [nomUser]\n-p [nomUser]\n+r [nomUser] [machine] \n-r [nomUser] [machine]\n-l\n-lp"
-}
-
 # Fonction d'ajout d'utilisateur
 function users_add {
   # On test si l'utilisateur existe
     if  ! grep -q $1 admin/passwd ; then
       echo -en "[$1] Mot de passe : "
       read -sr passwd
-      md_pass=$(echo $passwd | md5sum | sed "s/^\(.*\) -/\1/" )
+      md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/" )
       echo $1 >> admin/list ; echo $1 $md_pass >> admin/passwd
       touch users/$1
       echo -e "" ; a_afinger -e $1 # On renseigne les informations
@@ -32,15 +27,41 @@ function users_del {
     fi
 }
 
+# # Fonction de modification de mot de passe
+# function users_change_pass {
+#   if  grep -q $1 admin/passwd ; then
+#     echo -en "[$1] Ancien mot de passe : "
+#     read -sr passwd
+#     md_pass=$(echo $passwd | md5sum | sed "s/^\(.*\) -/\1/"  )
+#     checkPassUser $1 $md_pass
+#
+#     if [[ $? -eq 0 ]]; then
+#
+#       sed -i "/$1/d" admin/passwd
+#       echo -en "\n[$1] Nouveau mot de passe : "
+#       read -sr passwd ; echo ' '
+#       md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/"  )
+#       echo $1 $md_pass >> admin/passwd
+#
+#     else
+#       echo "Mot de passe faux."
+#     fi
+#   else
+#     echo "$1 n'existe pas dans la base."
+#   fi
+# }
+
 # Fonction de modification de mot de passe
 function users_change_pass {
   if  grep -q $1 admin/passwd ; then
-    sed -i "/$1/d" admin/passwd
-    echo -en "$1\nNouveau mot de passe : "
-    read -sr passwd
-    md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/"  )
 
-    echo $1 $md_pass >> admin/passwd
+      sed -i "/$1/d" admin/passwd
+      echo -en "[$1] Nouveau mot de passe : "
+      read -sr passwd; echo " "
+      md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/"  )
+      echo $1 $md_pass >> admin/passwd
+
+
   else
     echo "$1 n'existe pas dans la base."
   fi
@@ -88,10 +109,7 @@ function users_del_right {
   fi
 }
 
-# Fonction détaillant l'utilisation de la commande host
-function host_usage {
-  echo -e "Utilisations possibles: \n-a [machine]\n-d [machine]\n-l"
-}
+
 
 # Fonction d'ajout de machine
 function vm_add {
@@ -119,10 +137,6 @@ function vm_del {
     fi
 }
 
-# Fonction détaillant l'utilisation de la commande afinger
-function afinger_usage {
-  echo -e "Utilisations possibles: \n-e [nomUser]\n-l [nomUser] "
-}
 
 # Fonction permettant l'édition des infos utilisateur
 function afinger_edit {

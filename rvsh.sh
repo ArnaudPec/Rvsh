@@ -3,6 +3,7 @@
 # @(#) Auteurs : Walid Sadaoui, Arnaud Pecoraro
 # @(#) Date : 2015
 #set –x
+source usages.sh # Inclusion des fonctions usages
 source rvsh_func.sh # Inclusion des fonctions de lancement du script
 source admin_func.sh # Inclusion des fonctions du mode admin
 source connect_func.sh # Inclusion des fonctions du mode connect
