@@ -76,16 +76,20 @@ function users_add_right {
   if grep -q $1 admin/list ; then
 
     #if grep -q "$2$" machines/list ; then
-    if [[ -r machines/$2 ]]; then
-      if grep  -q "^$1 .*$2" admin/list ; then
-        echo  "$1 est deja autorise sur $2."
+      if [ -r machines/$2 ] && [ $# -eq 2 ]; then
+        if grep  -q "^$1 .*$2" admin/list ; then
+          echo  "$1 est deja autorise sur $2."
+        else
+          echo "Autorisation de $1 sur $2."
+          sed -i "s/\($1\)/\1 $2/" admin/list
+        fi
+      elif [[ -z $2 ]]; then
+      #statements
+        echo "Veuillez entrer un nom d'utilisateur!"
       else
-        echo "Autorisation de $1 sur $2."
-        sed -i "s/\($1\)/\1 $2/" admin/list
+        echo "$2 n'existe pas sur le réseau"
       fi
-    else
-      echo "$2 n'existe pas sur le réseau"
-    fi
+
   else
     echo "$1 n'existe pas dans la base."
   fi
@@ -117,12 +121,16 @@ function users_del_right {
 # Fonction d'ajout de machine
 function vm_add {
   # On teste si la machine existe
-    if [[ ! -f machines/$1 ]]; then
+    if [ ! -f machines/$1 ] && [ $# -eq 1 ]; then
       touch machines/$1
       echo "La machine $1 vient d'etre ajoutee."
+    elif [[ -z $1 ]]; then
+      #statements
+      echo "Veuillez entrer un nom de machine!"
     else
       echo "$1 existe deja dans la base."
     fi
+
 }
 
 # Fonction de suppression de machine
