@@ -117,7 +117,7 @@ function u_who {
 # Fonction de gestion de la commande rusers
 function u_rusers {
   if [[ $# -eq 0 ]]; then
-    for i in users/*; do
+    for i in machines/*; do
       if [[ -s $i ]]; then
         echo -e "$(basename $i) :\n" ; cat $i ; echo -e "\n"
       fi
@@ -126,19 +126,6 @@ function u_rusers {
     rusers_usage
   fi
 }
-
-# Fonction de gestion de la commande rusers
-#function u_rusers {
-#  if [[ $# -eq 0 ]]; then
-#    for i in machines/*; do
-#      if [[ -s $i ]]; then
-#        echo -e "$(basename $i) :\n" ; cat $i ; echo -e "\n"
-#      fi
-#    done
-#  else
-#    rusers_usage
-#  fi
-#}
 
 # Fonction de gestion de la commande passwd
 function u_passwd {
@@ -212,7 +199,11 @@ function u_quitter {
 }
 
 function u_help {
-  echo -e "Commandes disponibles :\nusers\nhost\nafinger\nconnect\nclear\nsu\nwrite\nfinger\nwho\nrusers\nrhost\nhelp\npasswd \nquitter"
+  if [[ $P1 == "rvsh>" ]]; then
+    echo -e "Commandes disponibles :\nusers\nhost\nafinger\nconnect\nclear\nsu\nwrite\nfinger\nwho\nrusers\nrhost\nhelp\npasswd \nquitter"
+  else
+    echo -e "Commandes disponibles :\nconnect\nclear\nsu\nwrite\nfinger\nwho\nrusers\nrhost\nhelp\npasswd \nquitter"
+  fi
 }
 
 function u_clear {

@@ -84,8 +84,7 @@ function users_add_right {
           sed -i "s/\($1\)/\1 $2/" admin/list
         fi
       elif [[ -z $2 ]]; then
-      #statements
-        echo "Veuillez entrer un nom d'utilisateur!"
+        echo "Veuillez entrer un nom de machine."
       else
         echo "$2 n'existe pas sur le réseau"
       fi
