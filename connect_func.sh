@@ -94,12 +94,13 @@ function u_finger {
     if [[ $P1 == "rvsh>" ]]; then
       echo "Compte Administrateur : console d'administration."
     else
-      a_afinger -l $(echo $P1 | cut -f1 -d "@")
+      a_afinger -l $(echo $P1 | cut -f1 -d "@")  | sed '1,/Session/d'
     fi
   else
     finger_usage
   fi
 }
+#cat ~/LO14_Projet_Linux/users/alice | sed '1,/Session/d' | awk '{ printf "%-10s %s %s %s %s %s\n", $1, $2, $4, $5, $6, $7 }'
 
 # Fonction de gestion de la commande who
 function u_who {
