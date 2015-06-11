@@ -31,6 +31,7 @@ function del_log_user {
 
 # Fonction de gestion des connexions
 function u_connect {
+  if [[ $# -eq 2 ]]; then
     clear
     echo -n "[$2] Saisir le mot de passe : "
     read -sr passwd
@@ -42,6 +43,9 @@ function u_connect {
       add_log_user $2 $1
       loop  $2 $1
     fi
+  else
+      connect_usage
+  fi
 }
 
 function rhost_print {
@@ -201,7 +205,7 @@ function u_quitter {
 
 function u_help {
   if [[ $P1 == "rvsh>" ]]; then
-    echo -e "Commandes disponibles :\nusers\nhost\nafinger\nconnect\nclear\nsu\nwrite\nfinger\nwho\nrusers\nrhost\nhelp\npasswd \nquitter"
+    echo -e "Commandes disponibles :\nconnect\nclear\nsu\nwrite\nfinger\nwho\nrusers\nrhost\nhelp\npasswd \nquitter"
   else
     echo -e "Commandes disponibles :\nconnect\nclear\nsu\nwrite\nfinger\nwho\nrusers\nrhost\nhelp\npasswd \nquitter"
   fi

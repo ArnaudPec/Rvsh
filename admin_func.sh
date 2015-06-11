@@ -73,10 +73,12 @@ function users_change_pass {
 # Fonction d'ajout de droit
 function users_add_right {
 
-  if grep -q $1 admin/list ; then
+if [[ -n $1 ]]; then
+
+  if grep -q $1 admin/list; then
 
     #if grep -q "$2$" machines/list ; then
-      if [ -r machines/$2 ] && [ $# -eq 2 ]; then
+      if [ -r machines/$2 ] && [ $# -ge 2 ]; then
         if grep  -q "^$1 .*$2" admin/list ; then
           echo  "$1 est deja autorise sur $2."
         else
@@ -88,18 +90,24 @@ function users_add_right {
       else
         echo "$2 n'existe pas sur le réseau"
       fi
-
+  #elif [[ -z $1 ]]; then
+  #  echo "Veuillez entrer un nom d'utilisateur!"
   else
     echo "$1 n'existe pas dans la base."
   fi
+else
+  echo "Veuillez entrer un nom d'utilisateur."
+fi
+
 }
 
 # Fonction de suppression de droit
 function users_del_right {
 
+if [[ -n $1 ]]; then
   if grep -q $1 admin/list ; then
     #if grep -q "$2$" machines/list ; then
-    if [[ -r machines/$2 ]]; then
+    if [ -r machines/$2 ] && [ $# -ge 2 ]; then
       if grep -q  "^$1 .*$2" admin/list; then
         echo "Suppression de l'autorisation de $1 sur $2."
         grep $1 admin/list | sed "s/$2//" >> admin/list # On supprime la machine de la ligne de l'utilisateur et on réecrit cette ligne en fin de fichier
@@ -107,12 +115,17 @@ function users_del_right {
       else
         echo  "$1 n'est pas autorise sur $2."
       fi
+    elif [[ -z $2 ]]; then
+      echo "Veuillez entrer un nom de machine."
     else
       echo "$2 n'existe pas sur le réseau"
     fi
   else
     echo "$1 n'existe pas dans la base."
   fi
+else
+  echo "Veuillez entrer un nom d'utilisateur."
+fi
 }
 
 

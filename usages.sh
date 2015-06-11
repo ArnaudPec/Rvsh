@@ -55,3 +55,8 @@ function afinger_usage {
 function users_usage {
   echo -e "[users] Utilisations possibles: \n-a [nomUser]\n-d [nomUser]\n-p [nomUser]\n+r [nomUser] [machine] \n-r [nomUser] [machine]\n-l\n-lp"
 }
+
+# Fonction détaillant l'utilisation de la commande users
+function connect_usage {
+  echo -e "[connect] Utilisation possible: \nconnect [machine] [nomUser]"
+}
