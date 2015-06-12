@@ -253,3 +253,23 @@ function a_clean {
   fi
 
 }
+
+# Sauvegarde complète du système
+function a_backup {
+
+ echo -n "Saisir le mot de passe admin : " ; read -sr passwd
+ md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/" )
+ checkPassUser admin $md_pass
+ if [[ $? -eq 0 ]]; then
+   checkReadyForMaintenance
+   if [[ $? -eq 0 ]]; then
+     mkdir -p backup
+     fname=backup_`date +%m%d_%U%M_%S`
+     tar -cvf backup/$fname.tar users/ machines/ admin/ >> /dev/null
+     echo -e "Etat sauvegarde : $fname.tar"
+   fi
+ else
+   echo "Mot de passe faux."
+ fi
+
+}
