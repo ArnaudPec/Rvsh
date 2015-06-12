@@ -65,3 +65,8 @@ function connect_usage {
 function backup_usage {
   echo -e "[backup] Utilisation possible: \nbackup\nbackup -l\nbackup -d [nomBackup]"
 }
+
+# Fonction détaillant l'utilisation de la commande restore
+function restore_usage {
+  echo -e "[backup] Utilisation possible: \nrestore [nomBackup]"
+}
