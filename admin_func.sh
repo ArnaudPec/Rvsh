@@ -244,7 +244,7 @@ function a_clean {
   if [[ $? -eq 0 ]]; then
     checkReadyForMaintenance
     if [[ $? -eq 0 ]]; then
-      bash clean_project.sh
+      bash clean_project.sh $1
       exit 0
     fi
 
@@ -254,8 +254,23 @@ function a_clean {
 
 }
 
-# Sauvegarde complète du système
+# Fonction de gestion de la commande backup
 function a_backup {
+  if [[ $# -eq 0 ]]; then
+    backup
+  elif [[ $# -eq 1 ]] && [[ $1 == -l ]]; then
+    for i in backup/* ; do echo -e "$(basename $i)"; done
+  elif [[ $# -eq 2 ]] && [[ $1 == -d ]]; then
+    if [[ -e backup/$2 ]]; then  rm backup/$2
+    else echo "$2 inexistant."
+    fi
+  else
+    backup_usage
+  fi
+}
+
+# Sauvegarde complète du système
+function backup {
 
  echo -n "Saisir le mot de passe admin : " ; read -sr passwd
  md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/" )

@@ -60,3 +60,8 @@ function users_usage {
 function connect_usage {
   echo -e "[connect] Utilisation possible: \nconnect [machine] [nomUser]"
 }
+
+# Fonction détaillant l'utilisation de la commande backup
+function backup_usage {
+  echo -e "[backup] Utilisation possible: \nbackup\nbackup -l\nbackup -d [nomBackup]"
+}
