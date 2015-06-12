@@ -18,10 +18,14 @@ function users_add {
 # Fonction de suppression d'utilisateur
 function users_del {
   # On test si l'utilisateur existe
-    if   grep -q $1 admin/list ; then
-      sed -i "/$1/d" admin/list
-      sed -i "/$1/d" admin/passwd
-      rm users/$1
+    if   grep -q $1 admin/passwd ; then
+      if  ! sed "1,/Session/d" users/$1 | grep -q . ; then
+        sed -i "/$1/d" admin/list
+        sed -i "/$1/d" admin/passwd
+        rm users/$1
+      else
+        echo "$1 connecte sur le reseau : suppression impossible".
+      fi
     else
       echo "$1 n'existe pas dans la base."
     fi
@@ -149,12 +153,15 @@ function vm_add {
 function vm_del {
   # On teste si la machine existe
     if [[ -f machines/$1 ]]; then
-      rm machines/$1
+      if [[ -s machines/$1 ]]; then
+        echo "Utilisateur(s) connecte(s) sur $1 : suppression impossible."
+      else
+        rm machines/$1
 
-      echo "Suppression des permissions sur $1."
-      sed -i "s/$1//g" admin/list # Suppression des permissions sur $1.
-
-      echo "La machine $1 vient d'etre supprimee."
+        echo "Suppression des permissions sur $1."
+        sed -i "s/$1//g" admin/list # Suppression des permissions sur $1.
+        echo "La machine $1 vient d'etre supprimee."
+      fi
     else
       echo "$1 n'existe pas dans la base."
     fi

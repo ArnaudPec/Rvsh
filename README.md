@@ -27,4 +27,7 @@ bash rvsh.sh -connect [nomMachine] [nomUser]
 bash clean_project.sh
 ```
 
+Walid Sadaoui
+Arnaud Pecoraro
+
 2015
