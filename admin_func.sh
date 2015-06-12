@@ -222,3 +222,34 @@ function a_afinger {
     * ) afinger_usage ;;
   esac
 }
+
+# Fonction qui vérifie si le système est prêt pour une opération de maintenance (clean, backup, restore)
+# c'est à dire aucun user connecté
+function checkReadyForMaintenance {
+  if ! u_rusers | grep -q . ; then
+    echo -e "\nAucun utilisateur connecte : systeme disponible pour maintenance."
+    return 0
+  else
+    echo -e "\nUtilisateur(s) connecte(s) : operation impossible."
+    return 1
+  fi
+}
+
+ # Nettoyage complet du système
+function a_clean {
+
+  echo -n "Saisir le mot de passe admin : " ; read -sr passwd
+  md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/" )
+  checkPassUser admin $md_pass
+  if [[ $? -eq 0 ]]; then
+    checkReadyForMaintenance
+    if [[ $? -eq 0 ]]; then
+      bash clean_project.sh
+      exit 0
+    fi
+
+  else
+    echo "Mot de passe faux."
+  fi
+
+}
