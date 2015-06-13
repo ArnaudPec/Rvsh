@@ -43,7 +43,7 @@ function passwd_usage {
 }
 # Fonction détaillant l'utilisation de la commande write
 function write_usage {
-  echo -e "[write] Utilisation possible: \nwrite [nomUser]@[machine] [message]"
+  echo -e "[write] Utilisation possible: \nwrite [nomUser]@[machine] [message_pouvant_comporter_des_espaces]"
 }
 
 # Fonction détaillant l'utilisation de la commande afinger
@@ -68,5 +68,10 @@ function backup_usage {
 
 # Fonction détaillant l'utilisation de la commande restore
 function restore_usage {
-  echo -e "[backup] Utilisation possible: \nrestore [nomBackup]"
+  echo -e "[restore] Utilisation possible: \nrestore [nomBackup]"
+}
+
+# Fonction détaillant l'utilisation de la commande alert
+function alert_usage {
+  echo -e "[alert] Utilisation possible: \alert [message_pouvant_comporter_des_espaces]"
 }

@@ -316,3 +316,24 @@ else
 fi
 
 }
+
+# Fonction permettant de  diffuser une alerte à tous les utilisateurs connectés au système
+function  a_alert {
+
+  if [[ $# -gt 0 ]]; then
+    while [[ $# -gt 0 ]]
+    do
+      message="$message $1" # Construction du message
+      shift
+    done
+
+    for i in machines/*; do # Envoi du message sur tous les tty
+        while read line; do
+          echo "Alerte : $message" >> $( echo $line | cut -f2 -d " " )
+        done < $i
+    done
+  else
+    alert_usage
+  fi
+
+}
