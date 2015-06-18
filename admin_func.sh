@@ -55,20 +55,12 @@ fi
 function users_change_pass {
   if  grep -q $1 admin/passwd ; then
 
-    # echo -en "[$1] Ancien mot de passe : "
-    # read -sr passwd; echo " "
-    # md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/"  )
-    # checkPassUser $1 $md_pass
-    #
-    # if [[ $? -eq 0 ]]; then
       sed -i "/$1/d" admin/passwd
       echo -en "[$1] Nouveau mot de passe : "
       read -sr passwd; echo " "
       md_pass=$(echo -n $passwd | md5sum | sed "s/^\(.*\) -/\1/"  )
       echo $1 $md_pass >> admin/passwd
-    # else
-    #   echo "Mot de passe faux"
-    # fi
+
   else
     echo "$1 n'existe pas dans la base."
   fi
@@ -81,7 +73,6 @@ if [[ -n $1 ]]; then
 
   if grep -q $1 admin/list; then
 
-    #if grep -q "$2$" machines/list ; then
       if [ -r machines/$2 ] && [ $# -ge 2 ]; then
         if grep  -q "^$1 .*$2" admin/list ; then
           echo  "$1 est deja autorise sur $2."
@@ -94,8 +85,6 @@ if [[ -n $1 ]]; then
       else
         echo "$2 n'existe pas sur le réseau"
       fi
-  #elif [[ -z $1 ]]; then
-  #  echo "Veuillez entrer un nom d'utilisateur!"
   else
     echo "$1 n'existe pas dans la base."
   fi
@@ -110,7 +99,6 @@ function users_del_right {
 
 if [[ -n $1 ]]; then
   if grep -q $1 admin/list ; then
-    #if grep -q "$2$" machines/list ; then
     if [ -r machines/$2 ] && [ $# -ge 2 ]; then
       if grep -q  "^$1 .*$2" admin/list; then
         echo "Suppression de l'autorisation de $1 sur $2."
@@ -141,7 +129,6 @@ function vm_add {
       touch machines/$1
       echo "La machine $1 vient d'etre ajoutee."
     elif [[ -z $1 ]]; then
-      #statements
       echo "Veuillez entrer un nom de machine!"
     else
       echo "$1 existe deja dans la base."
@@ -173,7 +160,11 @@ function afinger_edit {
   # On test si l'utilisateur existe
     if   grep -q $1 admin/list ; then
       echo -n "Nom :" ; read -r nom
-      echo -n "Email :" ; read -r email
+
+      regex="^(([-a-zA-Z0-9\!#\$%\&\'*+/=?^_\`{\|}~])+\.)*[-a-zA-Z0-9\!#\$%\&\'*+/=?^_\`{\|}~]+@\w((-|\w)*\w)*\.(\w((-|\w)*\w)*\.)*\w{2,4}$"
+      email=" "; while [[ ! $email =~ $regex ]]; do
+        echo -n "Email :" ; read -r email
+      done
       echo -e "Login : $1\nName : $nom\nEmail : $email\nSessions actives :" > users/$1
     else
       echo "$1 n'existe pas dans la base."
@@ -182,9 +173,11 @@ function afinger_edit {
 
 # Fonction permettant d'afficher des infos utilisateur
 function afinger_show {
-  # On test si l'utilisateur existe
+  # On teste si l'utilisateur existe
     if   grep -q $1 admin/list ; then
+      tput setaf 4
       cat users/$1
+      tput setaf 7
     else
       echo "$1 n'existe pas dans la base."
     fi

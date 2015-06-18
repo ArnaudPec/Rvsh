@@ -49,10 +49,10 @@ function u_connect {
 }
 
 function rhost_print {
-  echo -e "Machines presentes sur le reseau :\n=================================="
-  #cat machines/list
-  for i in machines/* ; do echo -e "$(basename $i)" ; done
-  echo "=================================="
+  tput setaf 4
+  echo -e "Machines presentes sur le reseau :"
+  for i in machines/* ; do echo -e " $(basename $i)" ; done
+  tput setaf 7
 }
 
 # Fonction définissant la boucle du prompt
@@ -98,21 +98,24 @@ function u_finger {
     if [[ $P1 == "rvsh>" ]]; then
       echo "Compte Administrateur : console d'administration."
     else
-      a_afinger -l $(echo $P1 | cut -f1 -d "@")  | sed '1,/Session/d'
+      tput setaf 4
+      a_afinger -l $(echo $P1 | cut -f1 -d "@")  | sed '1,/Session/d' # | awk '{ printf "%-5s %-3s %s %s %s %s", $1, $2, $4, $5, $6, $7 }'
+      tput setaf 7
     fi
   else
     finger_usage
   fi
 }
-#cat ~/LO14_Projet_Linux/users/alice | sed '1,/Session/d' | awk '{ printf "%-10s %s %s %s %s %s\n", $1, $2, $4, $5, $6, $7 }'
 
 # Fonction de gestion de la commande who
 function u_who {
   if [[ $# -eq 0 ]]; then
     if [[ $P1 == "rvsh>" ]]; then
-      echo "Admin : unique utilisateur de la console d'administration"
+      echo "Admin : unique utilisateur de la console d'administration."
     else
+      tput setaf 4
       cat machines/$(echo $P1 | cut -f2 -d "@" | cut -f1 -d ">")
+      tput setaf 7
     fi
   else
     who_usage
@@ -124,7 +127,9 @@ function u_rusers {
   if [[ $# -eq 0 ]]; then
     for i in machines/*; do
       if [[ -s $i ]]; then
-        echo -e "$(basename $i) :\n" ; cat $i ; echo -e "\n"
+        tput setaf 4
+        echo -e "$(basename $i) :" ; cat $i
+        tput setaf 7
       fi
     done
   else
@@ -180,7 +185,7 @@ function u_su {
 
   if [[ $# -eq 1 ]]; then
     if [[ $P1 == "rvsh>" ]]; then
-      echo "Les utilisateurs n'ont pas accès à la console d'administration"
+      echo "Les utilisateurs n'ont pas accès à la console d'administration."
     else
       p=${P1#*@}
       u_connect ${p%*>} $1 #connexion
@@ -204,10 +209,10 @@ function u_quitter {
 }
 
 function u_help {
-  if [[ $P1 == "rvsh>" ]]; then
-    echo -e "Commandes disponibles :\nconnect\nclear\nsu\nwrite\nfinger\nwho\nrusers\nrhost\nhelp\npasswd\nquitter"
+  if [[ ! $P1 == "rvsh>" ]]; then
+    echo -e "Commandes disponibles :\n\n connect\n clear\n su\n write\n finger\n who\n rusers\n rhost\n help\n passwd\n quitter\n"
   else
-    echo -e "Commandes disponibles :\nconnect\nclear\nsu\nwrite\nfinger\nwho\nrusers\nrhost\nhelp\npasswd\nquitter\nclean\nbackup\nrestore\nalert"
+    echo -e "Commandes disponibles :\n\n connect\n clear\n su\n write\n finger\n who\n rusers\n rhost\n help\n passwd\n quitter\n clean\n backup\n restore\n alert\n"
   fi
 }
 

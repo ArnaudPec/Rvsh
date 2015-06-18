@@ -77,7 +77,6 @@ function checkConnect {
 
 # Fonction permettant de nettoyer les logs de connexion
 # dans le cas d'une fermeture brutale du programme
-
 function initial_clean {
   for i in machines/*; do sed -i "/.*/d" $i ; done
   for j in users/*; do sed -ni  '1,4p' $j ;done
