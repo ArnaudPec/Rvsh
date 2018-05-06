@@ -11,12 +11,12 @@ Simule un réseau de machines virtuelles.
 
 ## Utilisation
 
-###Mode administrateur
+### Mode administrateur
 ```sh
 bash rvsh.sh -admin
 ```
 
-###Mode Utilisateur
+### Mode Utilisateur
 ```sh
 bash rvsh.sh -connect [nomMachine] [nomUser]
 ```
